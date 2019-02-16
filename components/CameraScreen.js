@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, 
+        ScrollView, SegmentedControlIOS, StyleSheet } from "react-native";
 import { Camera, Permissions, FileSystem } from "expo";
 import ImageResizer from 'react-native-image-resizer'; 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -30,7 +31,8 @@ export default class CameraScreen extends React.Component {
     showMoreOptions: false,
     mImage: null,
     imageUri: "null",
-    Debug: "debug"
+    Debug: "debug",
+    selectedIndex:1
   };
 
   async componentWillMount() {
@@ -80,6 +82,12 @@ export default class CameraScreen extends React.Component {
       this.setState({Debug: string})
     });
   }
+
+  switchScreen(){
+    if(this.state.selectedIndex == 1){
+      this.props.navigation.navigate('Demo');
+    }
+  }
   render() {
 
     const { hasCameraPermission } = this.state;
@@ -93,8 +101,18 @@ export default class CameraScreen extends React.Component {
           <Camera style={{ flex: 1 }} type={this.state.type}  ref={ref => {
               this.camera = ref;
             }}>
-            <SafeAreaView style={{flex:1}}>
-            <Image source={{uri:this.state.imageUri}} style={{width:100, height:100}} />
+            <SafeAreaView style={{flex:1, alignItems:'center'}}>
+              <SegmentedControlIOS
+                values={['Demo', 'Camera']}
+                selectedIndex={this.state.selectedIndex}
+                onChange={(event) => {
+                  this.switchScreen();
+                  this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
+                }}
+                tintColor='#83ABAA'
+                style={styles.segBar}
+              />
+            {/* <Image source={{uri:this.state.imageUri}} style={{width:100, height:100}} /> */}
               <View style={{flex:1, marginTop:0}}>
                   <Text style={{justifyContent:'center'}}>Demo | Camera</Text>
                   {/* <Icon name="ios-refresh" style={{color:'white', fontSize:30}} /> */}
@@ -131,3 +149,8 @@ export default class CameraScreen extends React.Component {
     }
   }
 }
+const styles = StyleSheet.create({
+  segBar:{
+    width:200,
+  }
+});
