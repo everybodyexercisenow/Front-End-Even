@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, 
-        ScrollView, SegmentedControlIOS, StyleSheet } from "react-native";
-import { Camera, Permissions, FileSystem } from "expo";
-import ImageResizer from 'react-native-image-resizer'; 
+        ScrollView, SegmentedControlIOS, StyleSheet, Dimensions } from "react-native";
+import { Camera, Permissions, FileSystem, ImageManipulator } from "expo";
+// import ImageResizer from 'react-native-image-resizer'; 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Category from '../components/Category';
@@ -42,7 +42,7 @@ export default class CameraScreen extends React.Component {
   }
 
   takePicture = () => {
-    this.setState({Debug: this.state.count});
+    // this.setState({Debug: this.state.count});
     // this.setState({count: this.state.count + 1});
     if (this.camera) {
       this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved, 
@@ -54,19 +54,11 @@ export default class CameraScreen extends React.Component {
   };
 
   onPictureSaved = async photo => {
-    this.setState({imageUri:photo.uri});
-    ImageResizer.createResizedImage(photo.uri, 384, 177, "JPEG",
-     80, 0, null).then((response) => {
-       console.log(response.uri)
-       this.state.imageUri = response.uri
-      // response.uri is the URI of the new image that can now be displayed, uploaded...
-      // response.path is the path of the new image
-      // response.name is the name of the new image with the extension
-      // response.size is the size of the new image
-    }).catch((err) => {
-      // Oops, something went wrong. Check that the filename is correct and
-      // inspect err to get more details.
-    });
+    const manipResult = await ImageManipulator.manipulateAsync(photo.uri, 
+        [{resize: {width: 400, height: 400}}], 
+        { format: 'jpeg' });
+    console.log(manipResult.uri)
+    this.postImage(manipResult.uri);
   };
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
@@ -74,17 +66,22 @@ export default class CameraScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    console.log("Constructor CS")
     // Toggle the state every second
     setInterval(()=>{
       this.takePicture();
     },300);
 
-    
+    console.log(this.state.selectedIndex)
     this.firebaseController = new FirebaseController();
     this.firebaseController.query((string)=>{
       this.setState({Debug: string})
     });
+
+    // TextToSpeech.initialize("username", "password")
+    // TextToSpeech.synthesize( "Text to speech, easy" )
+
+    // 1. view componenet, style 300 * 300
+    // 2. 
   }
 
   switchScreen(index){
@@ -93,6 +90,22 @@ export default class CameraScreen extends React.Component {
     // }
     this.setState({selectedIndex: index});
   }
+
+  postImage = async (uri) => {
+    const url = "http://157.55.165.103:8080/pose";
+    const data = new FormData();
+    // data.append('name', 'testName'); // you can append anyone.
+    data.append('image', uri);
+    fetch(url, {
+      method: 'POST',
+      body: data
+    }).then(res => {
+      console.log(res)
+    }).catch(error=>{
+      console.log(error)
+    });
+  }
+
   render() {
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
@@ -104,18 +117,17 @@ export default class CameraScreen extends React.Component {
         <View style={{ flex: 1 }}>
             <SafeAreaView style={{flex:1, alignItems:'center'}}>
               {this.state.selectedIndex == 1 ? (
-                <Camera style={{ flex: 1 }} type={this.state.type}  ref={ref => {
+                <Camera style={{ flex: 1 , 
+                justifyContent: 'flex-end', 
+                width: Dimensions.get('window').width}} type={this.state.type}  ref={ref => {
                       this.camera = ref;
                     }}>
                 {/* <Image source={{uri:this.state.imageUri}} style={{width:100, height:100}} /> */}
-                  <View style={{flex:1, marginTop:0}}>
-                      {/* <Text style={{justifyContent:'center'}}>Demo | Camera</Text> */}
-                      {/* <Icon name="ios-refresh" style={{color:'white', fontSize:30}} /> */}
-                  </View>
-            
-                  <View style={{flex:1, justifyContent: 'flex-end', marginBottom:30}}>
+  
+                  {/* <Text>H</Text> */}
+                  {/* <View style={{flex:1, justifyContent: 'flex-end', marginBottom:30}}>
                       <View style={{ height: 130, marginTop: 20 }}>
-                          {/* <ScrollView
+                          <ScrollView
                               horizontal={true} showsHorizontalScrollIndicator={false}
                           >
                               <Category categoryName="Daily" imageUri={require('../assets/1.jpg')}
@@ -127,9 +139,9 @@ export default class CameraScreen extends React.Component {
                               <Category categoryName="Yearly" imageUri={require('../assets/3.jpg')}
                                   name="Resturant"
                               />
-                          </ScrollView> */}
+                          </ScrollView>
                       </View>
-                  </View>
+                  </View> */}
                 </Camera>
               ) : (
                 <Demo />

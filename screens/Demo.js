@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export default class Demo extends Component {
   constructor(props) {
     super(props);
-    console.log("Constructor")
     this.state = {
         selectedIndex:0
     };

@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView  } from "react-native";
 
+import Category from '../components/Category';
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+  
 
   render() {
     return (
