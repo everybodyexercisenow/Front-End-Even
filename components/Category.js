@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text,Image, StyleSheet, ImageBackground } from 'react-native';
-
 export default class Category extends Component {
   constructor(props) {
     super(props);
