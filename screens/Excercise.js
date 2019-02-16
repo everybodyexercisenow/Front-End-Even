@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Category from '../components/Category';
-import Camera from '../components/Camera';
+// import CameraScreen from '../components/CameraScreen';
 
 export default class Excercise extends Component {
   constructor(props) {

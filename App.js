@@ -5,7 +5,7 @@ import { createStackNavigator, createAppContainer, createSwitchNavigator } from 
 //import screens
 import Excercise from './screens/Excercise';
 import Home from './screens/Home';
-import Camera from './components/Camera';
+import CameraScreen from './components/CameraScreen';
 
 class App extends React.Component {
   render() {
@@ -18,15 +18,15 @@ class App extends React.Component {
 }
 
 const AppNavigator = createSwitchNavigator({
+  Camera:{
+    screen: CameraScreen,
+  },
   Excercise:{
     screen:Excercise,
   },
   Home:{
     screen: Home,
   },
-  Camera:{
-    screen: Camera,
-  }
 
 });
 
