@@ -66,13 +66,13 @@ export default class CameraScreen extends React.Component {
   constructor(props) {
     super(props);
     // Toggle the state every second
-    setInterval(()=>{
-      this.takePicture();
-    },300);
-    // this.firebaseController = new FirebaseController();
-    // this.firebaseController.query((string)=>{
-    //   this.setState({Debug: string})
-    // });
+    // setInterval(()=>{
+    //   this.takePicture();
+    // },300);
+    this.firebaseController = new FirebaseController();
+    this.firebaseController.query((string)=>{
+      this.setState({Debug: string})
+    });
   }
   render() {
 
