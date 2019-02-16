@@ -44,11 +44,6 @@ export default class Excercise extends Component {
                         />
                     </ScrollView>
                 </View>
-                {/* <Button 
-                    icon={<Icon name="ios-close-circle"/>}
-                    title = "CLOSE"
-                    onPress={()=> this.props.navigation.navigate('Home')}
-                /> */}
                 <View style={{justifyContent:'center',  alignItems: 'center', marginTop:10}}>
                     <Icon 
                         name="ios-close-circle" 
