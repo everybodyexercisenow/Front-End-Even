@@ -36,22 +36,14 @@ export default class CameraScreen extends React.Component {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
   }
-  componentDidMount() {
-    // FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
-    //   console.log(e, 'Directory exists');
-    // });
-  }
 
   takePicture = () => {
     this.setState({Debug: this.state.count});
     // this.setState({count: this.state.count + 1});
     if (this.camera) {
       this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved }).catch(function(error) {
-        // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // console.log (errorCode)
-        // ...
       });
     }
   };
@@ -66,9 +58,9 @@ export default class CameraScreen extends React.Component {
   constructor(props) {
     super(props);
     // Toggle the state every second
-    // setInterval(()=>{
-    //   this.takePicture();
-    // },300);
+    setInterval(()=>{
+      this.takePicture();
+    },300);
     this.firebaseController = new FirebaseController();
     this.firebaseController.query((string)=>{
       this.setState({Debug: string})
@@ -92,24 +84,7 @@ export default class CameraScreen extends React.Component {
                   <Text style={{justifyContent:'center'}}>Demo | Camera</Text>
                   {/* <Icon name="ios-refresh" style={{color:'white', fontSize:30}} /> */}
               </View>
-              {/* <TouchableOpacity
-                style={{
-                  flex: 2,
-                  alignSelf: "flex-start",
-                  alignItems: "left"
-                }}
-                onPress={() => {
-                  this.x({
-                    type:
-                      this.state.type === Camera.Constants.Type.back
-                        ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back
-                  });
-                }}
-              >
-              </TouchableOpacity> */}
-
-              {/* bottom tab and recommendation */}
+         
               <View style={{flex:1, justifyContent: 'flex-end', marginBottom:30}}>
                   <View style={{ height: 130, marginTop: 20 }}>
                       <ScrollView
