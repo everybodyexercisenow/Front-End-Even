@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, ScrollView } from "react-native";
 import { Camera, Permissions, FileSystem } from "expo";
+import ImageResizer from 'react-native-image-resizer'; 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Category from '../components/Category';
@@ -41,7 +42,8 @@ export default class CameraScreen extends React.Component {
     this.setState({Debug: this.state.count});
     // this.setState({count: this.state.count + 1});
     if (this.camera) {
-      this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved }).catch(function(error) {
+      this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved, 
+        quality: 0.3}).catch(function(error) {
         var errorCode = error.code;
         var errorMessage = error.message;
       });
@@ -50,6 +52,18 @@ export default class CameraScreen extends React.Component {
 
   onPictureSaved = async photo => {
     this.setState({imageUri:photo.uri});
+    ImageResizer.createResizedImage(photo.uri, 384, 177, "JPEG",
+     80, 0, null).then((response) => {
+       console.log(response.uri)
+       this.state.imageUri = response.uri
+      // response.uri is the URI of the new image that can now be displayed, uploaded...
+      // response.path is the path of the new image
+      // response.name is the name of the new image with the extension
+      // response.size is the size of the new image
+    }).catch((err) => {
+      // Oops, something went wrong. Check that the filename is correct and
+      // inspect err to get more details.
+    });
   };
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
@@ -80,6 +94,7 @@ export default class CameraScreen extends React.Component {
               this.camera = ref;
             }}>
             <SafeAreaView style={{flex:1}}>
+            <Image source={{uri:this.state.imageUri}} style={{width:100, height:100}} />
               <View style={{flex:1, marginTop:0}}>
                   <Text style={{justifyContent:'center'}}>Demo | Camera</Text>
                   {/* <Icon name="ios-refresh" style={{color:'white', fontSize:30}} /> */}
