@@ -28,12 +28,12 @@ const AppNavigator = createStackNavigator({
   Demo:{
     screen: Demo,
   },
-  Excercise:{
-    screen:Excercise,
-  },
-  Home:{
-    screen: Home,
-  }
+  // Excercise:{
+  //   screen:Excercise,
+  // },
+  // Home:{
+  //   screen: Home,
+  // }
 },
 {
   headerMode:'none',

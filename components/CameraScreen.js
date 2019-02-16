@@ -6,7 +6,8 @@ import ImageResizer from 'react-native-image-resizer';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Category from '../components/Category';
-import FirebaseController from "./FirebaseController"
+import FirebaseController from "./FirebaseController";
+import Demo from '../screens/Demo';
 
 export default class CameraScreen extends React.Component {
   state = {
@@ -73,23 +74,26 @@ export default class CameraScreen extends React.Component {
   };
   constructor(props) {
     super(props);
+    console.log("Constructor CS")
     // Toggle the state every second
     setInterval(()=>{
       this.takePicture();
     },300);
+
+    
     this.firebaseController = new FirebaseController();
     this.firebaseController.query((string)=>{
       this.setState({Debug: string})
     });
   }
 
-  switchScreen(){
-    if(this.state.selectedIndex == 1){
-      this.props.navigation.navigate('Demo');
-    }
+  switchScreen(index){
+    // if(index == 0){
+    //   this.props.navigation.navigate('Demo');
+    // }
+    this.setState({selectedIndex: index});
   }
   render() {
-
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
@@ -98,52 +102,56 @@ export default class CameraScreen extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.type}  ref={ref => {
-              this.camera = ref;
-            }}>
             <SafeAreaView style={{flex:1, alignItems:'center'}}>
-              <SegmentedControlIOS
+              {this.state.selectedIndex == 1 ? (
+                <Camera style={{ flex: 1 }} type={this.state.type}  ref={ref => {
+                      this.camera = ref;
+                    }}>
+                {/* <Image source={{uri:this.state.imageUri}} style={{width:100, height:100}} /> */}
+                  <View style={{flex:1, marginTop:0}}>
+                      {/* <Text style={{justifyContent:'center'}}>Demo | Camera</Text> */}
+                      {/* <Icon name="ios-refresh" style={{color:'white', fontSize:30}} /> */}
+                  </View>
+            
+                  <View style={{flex:1, justifyContent: 'flex-end', marginBottom:30}}>
+                      <View style={{ height: 130, marginTop: 20 }}>
+                          {/* <ScrollView
+                              horizontal={true} showsHorizontalScrollIndicator={false}
+                          >
+                              <Category categoryName="Daily" imageUri={require('../assets/1.jpg')}
+                                  name="Home"
+                              />
+                              <Category categoryName="Monthly" imageUri={require('../assets/2.jpg')}
+                                  name="Experiences"
+                              />
+                              <Category categoryName="Yearly" imageUri={require('../assets/3.jpg')}
+                                  name="Resturant"
+                              />
+                          </ScrollView> */}
+                      </View>
+                  </View>
+                </Camera>
+              ) : (
+                <Demo />
+              )} 
+            <SegmentedControlIOS
                 values={['Demo', 'Camera']}
                 selectedIndex={this.state.selectedIndex}
                 onChange={(event) => {
-                  this.switchScreen();
-                  this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
+                  this.switchScreen(event.nativeEvent.selectedSegmentIndex);
+                  // this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
                 }}
                 tintColor='#83ABAA'
                 style={styles.segBar}
               />
-            {/* <Image source={{uri:this.state.imageUri}} style={{width:100, height:100}} /> */}
-              <View style={{flex:1, marginTop:0}}>
-                  <Text style={{justifyContent:'center'}}>Demo | Camera</Text>
-                  {/* <Icon name="ios-refresh" style={{color:'white', fontSize:30}} /> */}
-              </View>
-         
-              <View style={{flex:1, justifyContent: 'flex-end', marginBottom:30}}>
-                  <View style={{ height: 130, marginTop: 20 }}>
-                      <ScrollView
-                          horizontal={true} showsHorizontalScrollIndicator={false}
-                      >
-                          <Category categoryName="Daily" imageUri={require('../assets/1.jpg')}
-                              name="Home"
-                          />
-                          <Category categoryName="Monthly" imageUri={require('../assets/2.jpg')}
-                              name="Experiences"
-                          />
-                          <Category categoryName="Yearly" imageUri={require('../assets/3.jpg')}
-                              name="Resturant"
-                          />
-                      </ScrollView>
-                  </View>
-                  <View style={{justifyContent:'center',  alignItems: 'center', marginTop:10}}>
-                      <Icon 
-                          name="ios-close-circle" 
-                          style={{fontSize:50, color:'tomato'}}
-                          onPress={()=> this.props.navigation.navigate('Home')}
-                      />
-                  </View>
+              <View style={styles.cancel}>
+                  <Icon 
+                      name="ios-close-circle" 
+                      style={{fontSize:50, color:'tomato'}}
+                      onPress={()=> this.props.navigation.navigate('HomeScreen')}
+                  />
               </View>
             </SafeAreaView>
-          </Camera>
         </View>
       );
     }
@@ -152,5 +160,14 @@ export default class CameraScreen extends React.Component {
 const styles = StyleSheet.create({
   segBar:{
     width:200,
+    position: "absolute",
+    top:60
+  },
+  cancel:{
+    justifyContent:'center',  
+    alignItems: 'center', 
+    marginTop:10,
+    position: "absolute",
+    bottom:20
   }
 });
