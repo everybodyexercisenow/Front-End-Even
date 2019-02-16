@@ -4,6 +4,8 @@ import { Camera, Permissions, FileSystem } from "expo";
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Category from '../components/Category';
+import FirebaseController from "./FirebaseController"
+
 export default class CameraScreen extends React.Component {
   state = {
     hasCameraPermission: null,
@@ -35,16 +37,22 @@ export default class CameraScreen extends React.Component {
     this.setState({ hasCameraPermission: status === "granted" });
   }
   componentDidMount() {
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
-      console.log(e, 'Directory exists');
-    });
+    // FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
+    //   console.log(e, 'Directory exists');
+    // });
   }
 
   takePicture = () => {
     this.setState({Debug: this.state.count});
     // this.setState({count: this.state.count + 1});
     if (this.camera) {
-      this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+      this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // console.log (errorCode)
+        // ...
+      });
     }
   };
 
@@ -61,6 +69,10 @@ export default class CameraScreen extends React.Component {
     setInterval(()=>{
       this.takePicture();
     },300);
+    // this.firebaseController = new FirebaseController();
+    // this.firebaseController.query((string)=>{
+    //   this.setState({Debug: string})
+    // });
   }
   render() {
 
