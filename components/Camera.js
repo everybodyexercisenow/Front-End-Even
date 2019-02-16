@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Button } from "react-native";
+import { View, Text, TouchableOpacity, Button, Image } from "react-native";
 import { Camera, Permissions, FileSystem } from "expo";
 export default class camera extends React.Component {
   state = {
@@ -22,7 +22,10 @@ export default class camera extends React.Component {
     pictureSizeId: 0,
     showGallery: false,
     showMoreOptions: false,
-    mImage: null
+    mImage: null,
+    imageUri: "null",
+    Debug: "debug",
+    count: 0,
   };
 
   async componentWillMount() {
@@ -36,24 +39,34 @@ export default class camera extends React.Component {
   }
 
   takePicture = () => {
+    this.setState({Debug: this.state.count});
+    this.setState({count: this.state.count + 1});
     if (this.camera) {
-      console.log("haveit");
       this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
     }
   };
 
   onPictureSaved = async photo => {
-    await FileSystem.moveAsync({
-      from: photo.uri,
-      to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`
-    });
-    this.setState({ newPhotos: true });
+    this.setState({imageUri:photo.uri});
+    // await FileSystem.moveAsync({
+    //   from: photo.uri,
+    //   to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`
+    // });
+    // this.setState({ newPhotos: true });
   };
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
     return ratios;
   };
+  constructor(props) {
+    super(props);
+    // Toggle the state every second
+    setInterval(()=>{
+      this.takePicture();
+    },300);
+  }
   render() {
+
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
@@ -62,7 +75,9 @@ export default class camera extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.type}>
+          <Camera style={{ flex: 1 }} type={this.state.type}  ref={ref => {
+            this.camera = ref;
+          }}>
             <View
               style={{
                 flex: 1,
@@ -70,9 +85,10 @@ export default class camera extends React.Component {
                 flexDirection: "row"
               }}
             >
+           <Image style={{ height: 100, width: 100 }} source={{uri: this.state.imageUri}}/>
               <TouchableOpacity
                 style={{
-                  flex: 0.1,
+                  flex: 1,
                   alignSelf: "flex-end",
                   alignItems: "center"
                 }}
@@ -85,6 +101,7 @@ export default class camera extends React.Component {
                   });
                 }}
               >
+                <Text>{this.state.Debug}</Text>
                 <Text
                   style={{ fontSize: 18, marginBottom: 10, color: "white" }}
                 >
@@ -92,8 +109,8 @@ export default class camera extends React.Component {
                   Flip{" "}
                 </Text>
                 <Button
-                  onPress={()=>this.takePicture()}
-                  title="take picture"
+                  onPress={this.takePicture}
+                  title="t"
                   style={{ marginTop: 50 }}
                 />
               </TouchableOpacity>
