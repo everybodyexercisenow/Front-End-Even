@@ -14,10 +14,13 @@ class StatsCardComponent extends React.Component {
    render () {
     return (
       <View> 
-        <View style = {[styles.titleViewStyle]}>
-          <Text style = {styles.titleStyle}>
-            {this.props.title}
-          </Text>
+        <View style = {styles.cardHeadStyle}>
+          <View style = {[styles.titleViewStyle]}>
+            <Text style = {styles.titleStyle}>
+              {this.props.title}
+            </Text>
+          </View>
+          {this.props.segmentView}
         </View>
         {this.props.contentView}
       </View>
@@ -26,12 +29,11 @@ class StatsCardComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  titleStyle: {
-    textAlign: 'center',
-    fontFamily: "Avenir",
-    letterSpacing: 1.5,
-    
+  cardHeadStyle :{
+    flexDirection: "row",
+    justifyContent: 'space-between',
   },
+
   titleViewStyle: {
     marginTop: 20,
     marginLeft: 20,
@@ -39,6 +41,14 @@ const styles = StyleSheet.create({
     borderColor: '#83abaa',
     alignSelf: 'flex-start'
   },
+
+  titleStyle: {
+    textAlign: 'center',
+    fontFamily: "Avenir",
+    letterSpacing: 1.5,
+    
+  },
+
 
 });
 

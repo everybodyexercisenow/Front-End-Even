@@ -15,10 +15,10 @@ class ExerciseChartComponent extends React.Component {
    render () {
     return (
       <VictoryChart 
-        style = {styles.chartStyle}
         height = {250}
         theme={VictoryTheme.material}
         width = {55 * (this.state.workData.length)}
+        // padding={{ bottom: 10 }}
       >
       <VictoryBar
         alignment="start"
@@ -38,18 +38,19 @@ class ExerciseChartComponent extends React.Component {
         }}
         labelComponent={<VictoryLabel dx = {10}/>}
       />
-      <VictoryAxis style={{ axis: {stroke: "none"} }}/>
+      <VictoryAxis 
+      style={{ 
+        axis: {stroke: "none"},
+        tickLabels: {
+          padding:15,
+        },
+      }}
+      />
       </VictoryChart>  
     )
   }
 }
 
-const styles = StyleSheet.create({
-  chartStyle: {
-    width: 250,
-    color: "#00ff00"
-  }
-});
 
 
 export default ExerciseChartComponent
