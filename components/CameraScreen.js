@@ -93,6 +93,7 @@ export default class CameraScreen extends React.Component {
     const url = "http://157.55.165.103:8080/pose";
     const data = new FormData();
     // data.append('name', 'testName'); // you can append anyone.
+
     data.append('image', {
       uri, name:"1.jpg", type:"image/jpeg"
     });
