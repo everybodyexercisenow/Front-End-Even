@@ -3,15 +3,13 @@ import { View, Text, TouchableOpacity, Button, Image, SafeAreaView,
         ScrollView, SegmentedControlIOS, StyleSheet, Dimensions,
         AsyncStorage } from "react-native";
 import { Camera, Permissions, FileSystem, ImageManipulator } from "expo";
-// import ImageResizer from 'react-native-image-resizer'; 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Category from '../components/Category';
-// import FirebaseController from "./FirebaseController";
 import Demo from '../screens/Demo';
 import CanvasComponent from './CanvasComponent'
 
-import firebase from 'firebase';
+import Firebase from "./FirebaseController";
 
 export default class CameraScreen extends React.Component {
   state = {
@@ -39,13 +37,18 @@ export default class CameraScreen extends React.Component {
     Debug: "debug",
     selectedIndex:1,
     positionArray:{},
-    videolink: null,
+    videoLink: null,
     count:0,
   };
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
+
+    var ref = Firebase.database().ref()
+    ref.child("videoLink").on("value", (snapshot)=> {
+      this.setState({videoLink: snapshot.toJSON().toString()});
+    })
   }
 
   takePicture = () => {
@@ -80,26 +83,20 @@ export default class CameraScreen extends React.Component {
     },300);
 
     // this.firebaseController = new FirebaseController();
-    this.app = firebase.initializeApp({
-      apiKey: "AIzaSyBH9OeWQ99kDI3TMVX08Clj1ircvTZbAvs",
-      authDomain: "treehack-even.firebaseapp.com",
-      databaseURL: "https://treehack-even.firebaseio.com",
-      projectId: "treehack-even",
-      storageBucket: "treehack-even.appspot.com",
-      messagingSenderId: "845314858207"
-    });
+  
 
-    var ref = this.app.database().ref()
+    var ref = Firebase.database().ref()
     ref.child("tab").on("value", (snapshot)=> {
       this.switchScreen(Number.parseInt(snapshot.toJSON().toString()))
     })
-    // TextToSpeech.initialize("username", "password")
-    // TextToSpeech.synthesize( "Text to speech, easy" )
 
+    // ref.child("videoLink").on("value", (snapshot)=> {
+    //   console.log(snapshot);
+    //   this.setState({videoLink: snapshot.toJSON().toString()});
+    // })
   }
 
   switchScreen(index){
-    // console.log(index)
     this.setState({selectedIndex: index});
   }
 
@@ -122,55 +119,9 @@ export default class CameraScreen extends React.Component {
       console.log(error)
     });
   }
-  // fetch the data back asyncronously
-  _retrieveData = async () => {
-    try {
-        const value = await AsyncStorage.getItem('videoLink');
-        console.log("value: " + value);
-        if (value !== null) {
-            // Our data is fetched successfully
-            this.setState({videolink: value});
-            console.log("getting the value: ");
-            console.log(value);
-            // this.removeItemValue('videoLink');
-        }
-    } catch (error) {
-        // Error retrieving data
-    }
-
-    try {
-      const value = await AsyncStorage.getItem('videoLink');
-      console.log("value: " + value);
-      if(value == null){
-        console.log("successfully cleared!");
-      }
-      if (value !== null) {
-          // Our data is fetched successfully
-          this.setState({videolink: value});
-          console.log("getting the value: ");
-          console.log(value);
-      }
-  } catch (error) {
-      // Error retrieving data
-  }
-
-
-
-  }
-  // removeItemValue = async(key) => {
-  //   try {
-  //     await AsyncStorage.removeItem(key);
-  //     console.log("cleared");
-  //     return true;
-  //   }
-  //   catch(exception) {
-  //     console.log("not cleared");
-  //     return false;
-  //   }
-  // }
   render() {
     // console.log(this.props.navigation.screenProps);
-    const videoLink = "";
+    // const videoLink = "";
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
@@ -188,7 +139,7 @@ export default class CameraScreen extends React.Component {
                     }}>
                 </Camera>
               ) : (
-                <Demo videolink = {this.state.videolink} />
+                <Demo videoLink = {this.state.videoLink} />
               )} 
             <SegmentedControlIOS
                 values={['Demo', 'Camera']}
@@ -208,10 +159,10 @@ export default class CameraScreen extends React.Component {
                   />
               </View>
               {/* <Image style = {{position:"absolute",
-                               height:100,
-                               width:100,
-                               left:0,
-                               top:0}}
+              height:100,
+              width:100,
+              left:0,
+              top:0}}
               source={{uri: this.state.cameraUri}} ></Image> */}
               <CanvasComponent 
                 positionArray={this.state.positionArray} />

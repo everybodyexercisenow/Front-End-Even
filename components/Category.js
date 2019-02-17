@@ -1,24 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text,Image, StyleSheet, ImageBackground, TouchableHighlight,
-        AsyncStorage } from 'react-native';
-export default class Category extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
+  AsyncStorage } from 'react-native';
+import Firebase from './FirebaseController';
+  
+  export default class Category extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+      };
   }
 
-  // this.props.route.screenProps = {videoLink: this.props.videoLink};
-  _storeData = async () => {
-    this.removeItemValue('videoLink');
-    try {
-      console.log('videoLink setting: '+  this.props.videoLink);
-      await AsyncStorage.setItem('videoLink', this.props.videoLink);
-      console.log("successfully setting!");
-    } catch (error) {
-      // Error saving data
-    }
-  };
+
   removeItemValue = async(key) => {
     try {
       await AsyncStorage.removeItem(key);
@@ -31,15 +23,13 @@ export default class Category extends Component {
     }
   }
   navigateTo = () => {
-    this._storeData();
-    this.props.route.navigate('CameraScreen', {
-      videoLink: this.props.videoLink
-    });
+    // this._storeData();
+    var ref = Firebase.database().ref()
+    ref.child("videoLink").set(this.props.videoLink);
+    this.props.route.navigate('CameraScreen');
   }
 
   render() {
-    // console.log("Previous: ")
-    // console.log(this.props.navigation);
     return (
 
       <View style={{
