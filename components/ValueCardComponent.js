@@ -8,17 +8,32 @@ class ValueCardComponent extends React.Component {
         super(props);
         this.state = {
           mainField : props.mainField,
+          hour: props.hour,
+          minute: props.minute,
           subField : props.subField,
           sideMargin: props.margin,
+          isTime: props.isTime,
         }
+    }
+
+    renderText(props){
+      if (this.props.isTime){
+        return(<Text style = {styles.mainStyle}>
+          {this.props.mainField} 
+        </Text>) ;
+      } 
+      return (<Text style = {styles.mainStyle}>
+        {this.props.hour}
+        <Text style = {styles.unitStyle}>h</Text>
+        {this.props.minute}
+        <Text style = {styles.unitStyle}>m</Text>
+      </Text>);
     }
    render () {
     return (
       
       <View style = {styles.holderStyle}>
-        <Text style = {styles.mainStyle}>
-            {this.props.mainField}
-        </Text> 
+       {this.renderText()}
         <Text style = {styles.subStyle}>
             {this.props.subField}
         </Text> 
@@ -35,16 +50,20 @@ const styles = StyleSheet.create({
 
   mainStyle: {
     textAlign: 'center',
-    // font-family: 'lucida grande', tahoma, verdana, arial, sans-serif,
-    // font-size: 11px,
     fontSize: 35,
+    letterSpacing: 1.5,
+  },
+  
+  unitStyle: {
+    textAlign: 'center',
+    fontSize: 12,
+    letterSpacing: 1.5,
   },
 
   subStyle: {
     textAlign: 'center',
-    // font-family: 'lucida grande', tahoma, verdana, arial, sans-serif,
-    // font-size: 11px,
     color: '#D3D3D3',
+    letterSpacing: 1.5,
   },
 
   terminateStyle: {
