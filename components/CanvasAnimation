@@ -12,20 +12,17 @@ const bodyEdges = [
     ["rightElbow", "rightShoulder"],
     // ["leftWrist", "leftElbow"],
     // ["rightWrist", "rightElbow"],
-    ["leftHip", "leftKnee"],
-    ["rightHip", "rightKnee"],
+    // ["leftHip", "leftKnee"],
+    // ["rightHip", "rightKnee"],
     // ["leftAnkle", "leftKnee"],
     // ["rightAnkle", "rightKnee"],
 ]
 
-const mapIterator = (m, mp, callback) => {
+const mapIterator = (m, callback) => {
     const agg = [];
     for (var key in m) {
-        if (mp && mp.hasOwnProperty(key) && m.hasOwnProperty(key)) {
-            agg.push([callback(mp[key], m[key])])
-        }
-        else if (m.hasOwnProperty(key)) {
-            agg.push([callback(null, m[key])]);
+        if (m.hasOwnProperty(key)) {
+            agg.push([callback(key, m[key])]);
         }
     }
     return agg;
@@ -38,8 +35,7 @@ export default class CanvasComponent extends React.Component {
         this.state = {
             demoPose: [],
             frameAnimation: new Animated.Value(0),
-            frame: 0,
-            interval: 0,
+            frame: 0
         }
     }
 
@@ -50,46 +46,36 @@ export default class CanvasComponent extends React.Component {
         var ref = Firebase.database().ref()
         ref.child("videoLink").on("value", (snapshot)=> {
             const videoLink = snapshot.toJSON().toString();
-            console.log(videoLink)
             const linkSplit = videoLink.split("/");
             const linkBack = linkSplit[linkSplit.length - 1];
             const url = "http://157.55.165.103:8081/exercise/pose/" + linkBack
-            console.log(url)
-
-            var request = new XMLHttpRequest();
-            request.onreadystatechange = (e) => {
-            if (request.readyState !== 4) {
-                return;
-            }
-
-            if (request.status === 200) {
-                // demoPose = request.responseText
-                // console.log('success', request.responseText);
-                // console.log(response)
-                demoPose = JSON.parse(request.responseText)
+    
+            this.setState({videoLink: videoLink});
+            fetch(url).then((response)=>{
+                demoPose = JSON.parse(response["_bodyText"])
                 this.setState({demoPose: demoPose});
-
-                if (!this.state.interval) {
-
-                    this.state.interval = setInterval(()=>{
-                        // console.log(this.state.frame);
-                        this.state.frame++;
-                        this.forceUpdate();
-                        if (this.state.frame >= this.state.demoPose.length) this.state.frame = 0;
-                    }, 100)
-                }
-            } else {
-                console.warn('error');
-            }
-            };
-
-            request.open('GET', url);
-            request.send();
-
-            // fetch(url).then((response)=>{
-            // }).catch(error=>{
-            //     console.log(error);
-            // });
+                setInterval(()=>{
+                    // console.log(this.state.frame);
+                    this.state.frame++;
+                    this.forceUpdate();
+                    if (this.state.frame == this.state.demoPose.length) this.state.frame = 0;
+                }, 100)
+                // console.log(demoPose)
+                // Animated.timing(                  // Animate over time
+                //   this.state.frameAnimation,            // The animated value to drive
+                //   {
+                //     toValue: demoPose.length,
+                //     duration: 10000,              // Make it take a while
+                //   }
+                // ).start();                        // Starts the animation
+                // this.state.frameAnimation.addListener((value) => {
+                //     this.setState({frame: Math.floor(value["value"])});
+                //     if (value["value"] == demoPose.length) {
+                //         this.state.frameAnimation.resetAnimation();
+                //         this.state.frameAnimation.setValue(0);
+                //     }
+                // })
+            });
         })
         // console.log(this.state.demoPose)
       }
@@ -97,17 +83,11 @@ export default class CanvasComponent extends React.Component {
 
 
 
-    renderItem(mp, p) {
-        color = "#eeeeee"
-        cx = Dimensions.get('window').width * p[0];
-        cy = Dimensions.get('window').height * p[1];
-        if (mp != null && Math.abs(mp[0] - p[0]) < 0.2 && Math.abs(mp[1] - p[1]) < 0.2) {
-            return <Svg.Circle cx={cx} cy={cy}
-                r={10} strokewidth={2.5} fill="#00ee00" /> 
-        } 
-
+    renderItem(position) {
+        cx = Dimensions.get('window').width * position[0];
+        cy = Dimensions.get('window').height * position[1];
         return <Svg.Circle cx={cx} cy={cy}
-                r={10} strokewidth={2.5} fill="#ffffff" />
+                r={10} strokewidth={2.5} fill="#f1c40f" />
     }
      
     renderEdge(p1, p2) {
@@ -122,7 +102,7 @@ export default class CanvasComponent extends React.Component {
         // console.log(x1)
         if (x1 <= 0 && y1 <= 0 || x2 <= 0 && y2 <= 0) return null;
 
-        return <Svg.Line x1 = {x1} y1 = {y1} x2 = {x2} y2 = {y2} stroke="white"
+        return <Svg.Line x1 = {x1} y1 = {y1} x2 = {x2} y2 = {y2} stroke="red"
                 strokeWidth = "2" />
     }
 
@@ -146,8 +126,8 @@ export default class CanvasComponent extends React.Component {
 
         return (
             <Svg style={styles.canvas}>
-                {mapIterator(m, this.props.positionArray, (mp, p) => {
-                    return this.renderItem(mp, p);
+                {mapIterator(m, (key, value) => {
+                    return this.renderItem(value);
                 })}
                 {agg}
             </Svg>
