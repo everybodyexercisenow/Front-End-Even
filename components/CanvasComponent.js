@@ -54,6 +54,7 @@ export default class CanvasComponent extends React.Component {
         y2 = p2[1] * Dimensions.get('window').height;
         // console.log(x1)
         // console.log(x1)
+        if (x1 <= 0 && y1 <= 0 || x2 <= 0 && y2 <= 0) return null;
 
         return <Svg.Line x1 = {x1} y1 = {y1} x2 = {x2} y2 = {y2} stroke="red"
                 strokeWidth = "2" />
@@ -66,9 +67,11 @@ export default class CanvasComponent extends React.Component {
         if (m != undefined && m != null) {
             bodyEdges.forEach(element => {
                 // console.log(element)
-                var vs = m[element[0]];
-                var ve = m[element[1]];
-                agg.push([this.renderEdge(vs, ve)]);
+                if (m.hasOwnProperty(element[0]) && m.hasOwnProperty(element[1])) {
+                    var vs = m[element[0]];
+                    var ve = m[element[1]];
+                    agg.push([this.renderEdge(vs, ve)]);
+                }
             });
 
         }

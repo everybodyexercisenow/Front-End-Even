@@ -39,7 +39,8 @@ export default class CameraScreen extends React.Component {
     Debug: "debug",
     selectedIndex:1,
     positionArray:{},
-    videolink: null
+    count:0,
+    // videolink: this.props.getParam('videoLink', 'NO-ID')
   };
 
   async componentWillMount() {
@@ -62,7 +63,7 @@ export default class CameraScreen extends React.Component {
         [{resize: {width: 400, height: 400}},  {flip: {horizontal: true}}], 
         { format: 'jpeg' });
     // console.log(manipResult.uri)
-    // this.postImage(manipResult.uri);
+    this.postImage(manipResult.uri);
     this.setState({cameraUri:manipResult.uri});
   };
 
@@ -74,9 +75,9 @@ export default class CameraScreen extends React.Component {
   constructor(props) {
     super(props);
     // Toggle the state every second
-    // setInterval(()=>{
-    //   this.takePicture();
-    // },300);
+    setInterval(()=>{
+      this.takePicture();
+    },300);
 
     // this.firebaseController = new FirebaseController();
     this.app = firebase.initializeApp({
@@ -98,22 +99,23 @@ export default class CameraScreen extends React.Component {
   }
 
   switchScreen(index){
-    console.log(index)
+    // console.log(index)
     this.setState({selectedIndex: index});
   }
 
   postImage = async (uri) => {
-    const url = "http://157.55.165.103:8080/pose";
+    const url = "http://157.55.165.103:8081/pose";
     const data = new FormData();
     // data.append('name', 'testName'); // you can append anyone.
+    const filename = this.state.count.toString() + ".jpg";
+    this.state.count++;
     data.append('image', {
-      uri, name:"1.jpg", type:"image/jpeg"
+      uri, name: filename, type:"image/jpeg"
     });
     fetch(url, {
       method: 'POST',
       body: data
     }).then(res => {
-      // console.log(res)
       this.setState({positionArray: JSON.parse(
         res["_bodyText"])["keypoints"]});
     }).catch(error=>{
@@ -167,10 +169,8 @@ export default class CameraScreen extends React.Component {
   //   }
   // }
   render() {
-    // this._retrieveData();
     // console.log(this.props.navigation.screenProps);
-    // const videoLink = 
-    this._retrieveData();
+    const videoLink = "";
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
