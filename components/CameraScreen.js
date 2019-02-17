@@ -38,6 +38,7 @@ export default class CameraScreen extends React.Component {
     selectedIndex:1,
     positionArray:{},
     videoLink: null,
+    canvasOpen: 1,
     count:0,
   };
 
@@ -86,8 +87,15 @@ export default class CameraScreen extends React.Component {
   
 
     var ref = Firebase.database().ref()
-    ref.child("tab").on("value", (snapshot)=> {
-      this.switchScreen(Number.parseInt(snapshot.toJSON().toString()))
+    ref.child("tab").on("value", (tab)=> {
+      console.log(tab)
+      this.switchScreen(Number.parseInt(tab.toJSON().toString()))
+    })
+
+    ref.child("canvasOpen").on("value", (snapshot)=> {
+      console.log(snapshot)
+      this.setState({canvasOpen : 
+        Number.parseInt(snapshot.toJSON().toString())});
     })
   }
 
@@ -159,9 +167,12 @@ export default class CameraScreen extends React.Component {
               left:0,
               top:0}}
               source={{uri: this.state.cameraUri}} ></Image> */}
-              <CanvasComponent 
-                positionArray={this.state.positionArray} />
-            </View>
+              {this.state.selectedIndex == 1 && this.state.canvasOpen ? 
+              (<CanvasComponent 
+              positionArray={this.state.positionArray} />) : 
+              null}
+              
+          </View>
         </View>
       );
     }

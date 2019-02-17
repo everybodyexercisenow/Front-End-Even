@@ -128,7 +128,7 @@ export default class CanvasComponent extends React.Component {
 
     render() {
         let frame = this.state.frame;
-        console.log(frame)
+        // console.log(frame)
         if (!this.state.demoPose) return null;
         // Edges
         const agg = [];
