@@ -32,7 +32,7 @@ export default class CameraScreen extends React.Component {
     showGallery: false,
     showMoreOptions: false,
     mImage: null,
-    imageUri: "null",
+    cameraUri: "null",
     Debug: "debug",
     selectedIndex:1,
     positionArray:{},
@@ -55,10 +55,11 @@ export default class CameraScreen extends React.Component {
 
   onPictureSaved = async photo => {
     const manipResult = await ImageManipulator.manipulateAsync(photo.uri, 
-        [{resize: {width: 400, height: 400}}], 
-        { format: 'jpeg' }, { flip: { vertical: true }});
+        [{resize: {width: 400, height: 400}},  {flip: {horizontal: true}}], 
+        { format: 'jpeg' });
     // console.log(manipResult.uri)
     this.postImage(manipResult.uri);
+    this.setState({cameraUri:manipResult.uri});
   };
 
   getRatios = async () => {
@@ -82,8 +83,6 @@ export default class CameraScreen extends React.Component {
     // TextToSpeech.initialize("username", "password")
     // TextToSpeech.synthesize( "Text to speech, easy" )
 
-    // 1. view componenet, style 300 * 300
-    // 2. 
   }
 
   switchScreen(index){
@@ -104,8 +103,6 @@ export default class CameraScreen extends React.Component {
       // console.log(res)
       this.setState({positionArray: JSON.parse(
         res["_bodyText"])["keypoints"]});
-
-      // console.log(this.state.positionArray)
     }).catch(error=>{
       console.log(error)
     });
@@ -148,6 +145,12 @@ export default class CameraScreen extends React.Component {
                       onPress={()=> this.props.navigation.navigate('HomeScreen')}
                   />
               </View>
+              <Image style = {{position:"absolute",
+                               height:100,
+                               width:100,
+                               left:0,
+                               top:0}}
+              source={{uri: this.state.cameraUri}} ></Image>
               <CanvasComponent 
                 positionArray={this.state.positionArray} />
             </SafeAreaView>
