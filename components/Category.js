@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text,Image, StyleSheet, ImageBackground, TouchableHighlight } from 'react-native';
+import { View, Text,Image, StyleSheet, ImageBackground, TouchableHighlight,
+        AsyncStorage } from 'react-native';
 export default class Category extends Component {
   constructor(props) {
     super(props);
@@ -7,16 +8,38 @@ export default class Category extends Component {
     };
   }
 
+  // this.props.route.screenProps = {videoLink: this.props.videoLink};
+  _storeData = async () => {
+    this.removeItemValue('videoLink');
+    try {
+      console.log('videoLink setting: '+  this.props.videoLink);
+      await AsyncStorage.setItem('videoLink', this.props.videoLink);
+      console.log("successfully setting!");
+    } catch (error) {
+      // Error saving data
+    }
+  };
+  removeItemValue = async(key) => {
+    try {
+      await AsyncStorage.removeItem(key);
+      console.log("cleared");
+      return true;
+    }
+    catch(exception) {
+      console.log("not cleared");
+      return false;
+    }
+  }
   navigateTo = () => {
-    this.props.route.screenProps = {videoLink: this.props.videoLink};
+    this._storeData();
     this.props.route.navigate('CameraScreen', {
       videoLink: this.props.videoLink
     });
   }
 
   render() {
-    console.log("Previous: ")
-    console.log(this.props.navigation);
+    // console.log("Previous: ")
+    // console.log(this.props.navigation);
     return (
 
       <View style={{
