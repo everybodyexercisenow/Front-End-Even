@@ -6,9 +6,11 @@ import { Camera, Permissions, FileSystem, ImageManipulator } from "expo";
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Category from '../components/Category';
-import FirebaseController from "./FirebaseController";
+// import FirebaseController from "./FirebaseController";
 import Demo from '../screens/Demo';
 import CanvasComponent from './CanvasComponent'
+
+import firebase from 'firebase';
 
 export default class CameraScreen extends React.Component {
   state = {
@@ -59,7 +61,7 @@ export default class CameraScreen extends React.Component {
         [{resize: {width: 400, height: 400}},  {flip: {horizontal: true}}], 
         { format: 'jpeg' });
     // console.log(manipResult.uri)
-    this.postImage(manipResult.uri);
+    // this.postImage(manipResult.uri);
     this.setState({cameraUri:manipResult.uri});
   };
 
@@ -71,22 +73,31 @@ export default class CameraScreen extends React.Component {
   constructor(props) {
     super(props);
     // Toggle the state every second
-    setInterval(()=>{
-      this.takePicture();
-    },300);
+    // setInterval(()=>{
+    //   this.takePicture();
+    // },300);
 
-    // console.log(this.state.selectedIndex)
-    this.firebaseController = new FirebaseController();
-    this.firebaseController.query((string)=>{
-      this.setState({Debug: string})
+    // this.firebaseController = new FirebaseController();
+    this.app = firebase.initializeApp({
+      apiKey: "AIzaSyBH9OeWQ99kDI3TMVX08Clj1ircvTZbAvs",
+      authDomain: "treehack-even.firebaseapp.com",
+      databaseURL: "https://treehack-even.firebaseio.com",
+      projectId: "treehack-even",
+      storageBucket: "treehack-even.appspot.com",
+      messagingSenderId: "845314858207"
     });
 
+    var ref = this.app.database().ref()
+    ref.child("tab").on("value", (snapshot)=> {
+      this.switchScreen(Number.parseInt(snapshot.toJSON().toString()))
+    })
     // TextToSpeech.initialize("username", "password")
     // TextToSpeech.synthesize( "Text to speech, easy" )
 
   }
 
   switchScreen(index){
+    console.log(index)
     this.setState({selectedIndex: index});
   }
 
@@ -148,12 +159,12 @@ export default class CameraScreen extends React.Component {
                       onPress={()=> this.props.navigation.navigate('HomeScreen')}
                   />
               </View>
-              <Image style = {{position:"absolute",
+              {/* <Image style = {{position:"absolute",
                                height:100,
                                width:100,
                                left:0,
                                top:0}}
-              source={{uri: this.state.cameraUri}} ></Image>
+              source={{uri: this.state.cameraUri}} ></Image> */}
               <CanvasComponent 
                 positionArray={this.state.positionArray} />
             </SafeAreaView>

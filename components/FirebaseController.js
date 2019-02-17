@@ -22,8 +22,14 @@ class FirebaseController{
     // console.log(this.database)
     var ref = this.app.database().ref()
     ref.child("UserID/Analysis/0216/Exercise 1/Name").once("value").then((snapshot)=>{
-      console.log(snapshot)
       callback(snapshot)
+    })
+  }
+
+  queryOn(url, callback) {
+    var ref = this.app.database().ref()
+    ref.child(url).on("value", function(snapshot) {
+      callback(snapshot);
     })
   }
 }
