@@ -4,11 +4,13 @@ import { createStackNavigator, createAppContainer,
         createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-//import screens
+import './global.js';
 import Home from './screens/Home';
 import CameraScreen from './components/CameraScreen';
 import Demo from './screens/Demo';
 import Status from './screens/Status';
+
+
 
 class App extends React.Component {
   render() {

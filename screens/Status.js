@@ -5,6 +5,7 @@ import ExerciseChartComponent from '../components/ExerciseChartComponent'
 import StatsCardComponent from '../components/StatsCardComponent'
 import ValueCardComponent from '../components/ValueCardComponent'
 
+
 export default class Status extends Component {
   state = {
     selectedIndex: 0,
@@ -57,27 +58,36 @@ export default class Status extends Component {
 
       return (
           <SafeAreaView style={styles.backgroundView}>
-              <View style = {styles.foregroundView}>
+              <Text style = {styles.headerStyle}>Stats</Text>
+              <ScrollView style = {styles.foregroundView}>
 
                 <View style = {{flex: 2.5}}>
                   <StatsCardComponent title = {"DAILY MOTIVATION"} contentView = {
-                    <View style = {styles.mottoHolderStyle}>
-                    <Text>
+                    <View style = {[styles.mottoHolderStyle, {marginTop: 0}]}>
+                    <Text style = {[styles.quoteStyle, {alignSelf:'flex-start',height: 30, marginTop: 10}]}>"</Text>
+                    <Text >
                     Happiness is when what you think, what you say, and what you do are in harmony.
                     </Text>
                     <Text style = {{alignSelf:'flex-end', marginTop: 5}}>
-                    ———— Mahatma Gandhi
+                    —— Mahatma Gandhi
                     </Text>
+                    <Text style = {[styles.quoteStyle, {alignSelf:'flex-end'}]}>"</Text>
                     </View >
                   }/>
                 </View>
 
-                <View style={{flex: 5}}>
+                <View style={{flex: 5, paddingBottom: 10}}>
                   <View style={styles.lineStyle}/>
-                    <StatsCardComponent title = {"THIS WEEK"} contentView = {
-                      <View>
-                        <SegmentedControlIOS
-                          style = {{width:130, alignSelf: 'flex-end', marginRight: 8}}
+                    <StatsCardComponent title = {"THIS WEEK"} 
+                    contentView = {
+                        <ScrollView horizontal = {true} 
+                          contentContainerStyle={styles.contentContainer}>
+                          {this.renderTab()}
+                        </ScrollView>
+                    }
+                    segmentView = {
+                      <SegmentedControlIOS
+                          style = {{width:150, alignSelf: 'flex-end', marginRight: 8}}
                           values={['Exercise', 'Accuracy']}
                           selectedIndex={this.state.selectedIndex}
                           tintColor = '#83abaa'
@@ -85,11 +95,6 @@ export default class Status extends Component {
                             this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
                           }}
                         />
-                        <ScrollView horizontal = {true} 
-                          contentContainerStyle={styles.contentContainer}>
-                          {this.renderTab()}
-                        </ScrollView>
-                      </View>
                     }/>
                 </View>
 
@@ -97,35 +102,46 @@ export default class Status extends Component {
                   <View style={styles.lineStyle}/>
                   <StatsCardComponent title = {"SUMMARY"}  contentView = {
                     <View style={{justifyContent: "space-around", flexDirection:"row"}}>
-                      <ValueCardComponent mainField = {"24"} subField = {"SETS COMPLETED"} />
-                      <ValueCardComponent mainField = {"1H57M"} subField = {"TIME EXERCISING"} />
+                      <ValueCardComponent mainField = {"24"} isTime = {true} subField = {"SETS COMPLETED"} />
+                      <ValueCardComponent isTime = {false} hour = {"1"} minute = {"57"} subField = {"TIME EXERCISING"} />
                       
                     </View>
                   }/>
                 </View>
 
-            </View>
+            </ScrollView>
           </SafeAreaView>  
       )
   }
 }
 
+
+
+console.log("this is the color:");
+console.log(global.lightGrayColor);
+
 const styles = StyleSheet.create({
 backgroundView: {
   flex: 1,
-  backgroundColor: "#83abaa", //theme color 
+  backgroundColor: global.themeColor , //theme color 
+},
+
+headerStyle: {
+  height: global.headerHeight,
+  alignSelf: 'center',
+  fontSize : global.headerFont,
+  color: global.white,
+  paddingTop: global.headerPadding,
 },
 
 foregroundView: {
-  marginTop : 20,
   flex: 1,
-  backgroundColor: "#ffffff", //backgroundDarkGray
-  
+  backgroundColor: global.white, //backgroundDarkGray
 },
 
 contentContainer: {
   margin: 0,
-  backgroundColor:"#ffffff",//white
+  backgroundColor: global.white,//white
 },
 
 statesView: {
@@ -135,14 +151,19 @@ statesView: {
 },
 
 lineStyle: {
-  borderBottomColor: '#D3D3D3', //lightgray
+  borderBottomColor: global.lightGrayColor, //lightgray
   borderBottomWidth: 1,
 },
 
 mottoHolderStyle: {
-  margin: 25,
-  marginLeft: 31,
-  marginRight: 31,
+  margin: global.marginTB,
+  marginLeft: global.marginLR ,
+  marginRight: global.marginLR ,
+},
+
+quoteStyle: {
+  fontSize: 35,
+  color: global.lightGrayColor,
 }
 
 });
