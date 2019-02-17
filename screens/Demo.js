@@ -10,7 +10,6 @@ export default class Demo extends Component {
     // const { navigation } = this.props;
     this.state = {
         selectedIndex:0,
-        videolink: this.props.videolink
     };
   }
   switchScreen(index){
@@ -21,7 +20,7 @@ export default class Demo extends Component {
   render() {
     return ( 
       <Video
-        source={{ uri:this.state.videolink}}
+        source={{ uri:this.props.videoLink}}
         rate={1.0}
         volume={1.0}
         isMuted={false}
