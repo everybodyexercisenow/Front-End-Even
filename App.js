@@ -5,7 +5,6 @@ import { createStackNavigator, createAppContainer,
 import Icon from 'react-native-vector-icons/Ionicons';
 
 //import screens
-import Excercise from './screens/Excercise';
 import Home from './screens/Home';
 import CameraScreen from './components/CameraScreen';
 import Demo from './screens/Demo';
@@ -27,13 +26,7 @@ const AppNavigator = createStackNavigator({
   },
   Demo:{
     screen: Demo,
-  },
-  // Excercise:{
-  //   screen:Excercise,
-  // },
-  // Home:{
-  //   screen: Home,
-  // }
+  }
 },
 {
   headerMode:'none',
@@ -55,9 +48,9 @@ const AppBottomTab = createBottomTabNavigator({
   CameraScreen:{
     screen:AppNavigator,
     navigationOptions:{
-      tabBarLabel: 'CAMERA',
+      tabBarLabel: 'GO',
         tabBarIcon: ({tintColor}) =>(
-          <Icon name="ios-camera" color={tintColor} size={24}/>
+          <Icon name="ios-fitness" color={tintColor} size={24} style={{padding:10, borderRadius:3}}/>
         )
     }
   },

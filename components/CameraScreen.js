@@ -36,6 +36,7 @@ export default class CameraScreen extends React.Component {
     Debug: "debug",
     selectedIndex:1,
     positionArray:{},
+    // videolink: this.props.getParam('videoLink', 'NO-ID')
   };
 
   async componentWillMount() {
@@ -113,6 +114,8 @@ export default class CameraScreen extends React.Component {
   }
 
   render() {
+    console.log(this.props.navigation.screenProps);
+    const videoLink = this.props.navigation.screenProps["videoLink"];
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
@@ -130,7 +133,7 @@ export default class CameraScreen extends React.Component {
                     }}>
                 </Camera>
               ) : (
-                <Demo />
+                <Demo videolink = {videoLink} />
               )} 
             <SegmentedControlIOS
                 values={['Demo', 'Camera']}
@@ -145,7 +148,7 @@ export default class CameraScreen extends React.Component {
               <View style={styles.cancel}>
                   <Icon 
                       name="ios-close-circle" 
-                      style={{fontSize:50, color:'tomato'}}
+                      style={{fontSize:60, color:'#83ABAA'}}
                       onPress={()=> this.props.navigation.navigate('HomeScreen')}
                   />
               </View>
