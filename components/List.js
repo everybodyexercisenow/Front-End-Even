@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
     title:{
         paddingBottom:2,
-        letterSpacing:1,
+        letterSpacing:1.4,
         textDecorationColor: '#83ABAA',
     },
     titleBorder:{

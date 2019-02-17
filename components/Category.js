@@ -51,7 +51,7 @@ import Firebase from './FirebaseController';
           </Image>
         </TouchableHighlight>
         <View style={{position:'absolute', bottom:10, left:0, padding:5}}>
-            <Text style={{color:'white', fontWeight:'bold', fontSize:20}}> {this.props.categoryName} </Text>
+            <Text style={{color:'white', fontWeight:'bold', fontSize:20, paddingLeft:10}}> {this.props.categoryName} </Text>
         </View>
       </View>
     );
