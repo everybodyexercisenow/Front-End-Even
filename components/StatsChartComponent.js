@@ -18,24 +18,31 @@ class StatsChartComponent extends React.Component {
         height = {250}
         theme={VictoryTheme.material}
         width = {55 * (this.state.accuracyData.length)}
+        // padding={{ bottom: 10 }}
       >
       <VictoryArea 
         data={this.state.accuracyData} 
         style={{
           data: {
-            fill: "#83abaa", fillOpacity: 0.3, stroke: "#83abaa", strokeWidth: 3
+            fill: global.themeColor, fillOpacity: 0.3, stroke: global.themeColor, strokeWidth: 3
           },
           labels: {
             fontSize: 15,
-            fill: "#83abaa"
+            fill: global.themeColor
           }
         }}
       />
-      <VictoryAxis/>
+      <VictoryAxis
+        style={{
+          tickLabels: {
+            padding:15,
+          },
+        }}
+      />
       <VictoryLine
         height = {180}
         style={{
-          data: { stroke: "#83abaa" },
+          data: { stroke: global.themeColor },
           parent: { border: "1px solid #ccc"},
           labels: {
             fontSize: 15,
