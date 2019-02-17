@@ -11,8 +11,6 @@ export default class List extends Component {
   }
   
   render() {
-      console.log("list nav: ");
-      console.log(this.props.navigation);
         var toTitleCase = function (str) {
             str = str.toLowerCase().split(' ');
             for (var i = 0; i < str.length; i++) {

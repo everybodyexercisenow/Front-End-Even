@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, 
-        ScrollView, SegmentedControlIOS, StyleSheet, Dimensions } from "react-native";
+        ScrollView, SegmentedControlIOS, StyleSheet, Dimensions,
+        AsyncStorage } from "react-native";
 import { Camera, Permissions, FileSystem, ImageManipulator } from "expo";
 // import ImageResizer from 'react-native-image-resizer'; 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -38,7 +39,7 @@ export default class CameraScreen extends React.Component {
     Debug: "debug",
     selectedIndex:1,
     positionArray:{},
-    // videolink: this.props.getParam('videoLink', 'NO-ID')
+    videolink: null
   };
 
   async componentWillMount() {
@@ -120,10 +121,57 @@ export default class CameraScreen extends React.Component {
       console.log(error)
     });
   }
+  // fetch the data back asyncronously
+  _retrieveData = async () => {
+    try {
+        const value = await AsyncStorage.getItem('videoLink');
+        console.log("value: " + value);
+        if (value !== null) {
+            // Our data is fetched successfully
+            this.setState({videolink: value});
+            console.log("getting the value: ");
+            console.log(value);
+            // this.removeItemValue('videoLink');
+        }
+    } catch (error) {
+        // Error retrieving data
+    }
 
+    try {
+      const value = await AsyncStorage.getItem('videoLink');
+      console.log("value: " + value);
+      if(value == null){
+        console.log("successfully cleared!");
+      }
+      if (value !== null) {
+          // Our data is fetched successfully
+          this.setState({videolink: value});
+          console.log("getting the value: ");
+          console.log(value);
+      }
+  } catch (error) {
+      // Error retrieving data
+  }
+
+
+
+  }
+  // removeItemValue = async(key) => {
+  //   try {
+  //     await AsyncStorage.removeItem(key);
+  //     console.log("cleared");
+  //     return true;
+  //   }
+  //   catch(exception) {
+  //     console.log("not cleared");
+  //     return false;
+  //   }
+  // }
   render() {
-    console.log(this.props.navigation.screenProps);
-    const videoLink = this.props.navigation.screenProps["videoLink"];
+    // this._retrieveData();
+    // console.log(this.props.navigation.screenProps);
+    // const videoLink = 
+    this._retrieveData();
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
@@ -141,7 +189,7 @@ export default class CameraScreen extends React.Component {
                     }}>
                 </Camera>
               ) : (
-                <Demo videolink = {videoLink} />
+                <Demo videolink = {this.state.videolink} />
               )} 
             <SegmentedControlIOS
                 values={['Demo', 'Camera']}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, 
-    ScrollView, SegmentedControlIOS, StyleSheet } from "react-native";
+    ScrollView, SegmentedControlIOS, StyleSheet,AsyncStorage } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Video} from 'expo';
 
