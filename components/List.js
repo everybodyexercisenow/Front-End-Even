@@ -72,15 +72,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir',
     },
     title:{
-        paddingBottom:2,
-        letterSpacing:1.4,
+        paddingBottom: 2,
+        letterSpacing: 1.4,
         textDecorationColor: '#83ABAA',
     },
     titleBorder:{
         borderBottomWidth: 2,
         borderColor: '#83abaa',
         alignSelf: 'flex-start',
-        marginLeft:15,
-        marginBottom:10
+        marginLeft: 25,
+        marginBottom: 10
     }
 });

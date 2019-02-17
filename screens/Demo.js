@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, 
     ScrollView, SegmentedControlIOS, StyleSheet,AsyncStorage, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Video} from 'expo';
+import {Video, BlurView} from 'expo';
 
 export default class Demo extends Component {
   constructor(props) {
@@ -18,34 +18,26 @@ export default class Demo extends Component {
     }
   }
   render() {
-    return ( 
-      <SafeAreaView style={styles.container}>
+    return (
+      <View style={StyleSheet.absoluteFill}>
         <Video
-          source={{ uri:this.props.videoLink}}
+          source={{uri:this.props.videoLink}}
           rate={1.0}
           volume={1.0}
           isMuted={false}
           resizeMode="cover"
           shouldPlay
           isLooping
-          style={styles.video}
+          style={StyleSheet.absoluteFill}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container:{
-    width: Dimensions.get('window').width,
-    marginTop: 60,
-    flex:1,
-    alignItems: 'center',
-    justifyContent:'center',
-    backgroundColor:'#83ABAA',
-  },
   video:{
     width: 300, 
     height: 300,
   }
-  });
+});

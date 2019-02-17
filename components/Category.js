@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { View, Text,Image, StyleSheet, ImageBackground, TouchableHighlight,
   AsyncStorage } from 'react-native';
 import Firebase from './FirebaseController';
+import { LinearGradient } from 'expo';
   
-  export default class Category extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-      };
+export default class Category extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
   }
-
 
   removeItemValue = async(key) => {
     try {
@@ -50,8 +50,12 @@ import Firebase from './FirebaseController';
           >
           </Image>
         </TouchableHighlight>
+        <LinearGradient
+          colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
+          style={{ position: 'absolute', width: 215, height: 40, left: 5, bottom: -10, padding: 0, alignItems: 'center', margin: 10}}>
+        </LinearGradient>
         <View style={{position:'absolute', bottom:10, left:0, padding:5}}>
-            <Text style={{color:'white', fontWeight:'bold', fontSize:20, paddingLeft:10}}> {this.props.categoryName} </Text>
+            <Text style={{color:'white', fontWeight:'bold', fontSize:20, paddingLeft:20}}> {this.props.categoryName} </Text>
         </View>
       </View>
     );

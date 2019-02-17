@@ -131,7 +131,7 @@ export default class CameraScreen extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-            <SafeAreaView style={{flex:1, alignItems:'center'}}>
+            <View style={{flex:1, alignItems:'center'}}>
               {this.state.selectedIndex == 1 ? (
                 <Camera style={{ flex: 1 , 
                 justifyContent: 'flex-end', 
@@ -155,7 +155,7 @@ export default class CameraScreen extends React.Component {
               <View style={styles.cancel}>
                   <Icon 
                       name="ios-close-circle" 
-                      style={{fontSize:60, color:'#83ABAA'}}
+                      style={{fontSize:60, color:'#83ABAA', marginBottom:30}}
                       onPress={()=> this.props.navigation.navigate('HomeScreen')}
                   />
               </View>
@@ -167,7 +167,7 @@ export default class CameraScreen extends React.Component {
               source={{uri: this.state.cameraUri}} ></Image> */}
               <CanvasComponent 
                 positionArray={this.state.positionArray} />
-            </SafeAreaView>
+            </View>
         </View>
       );
     }

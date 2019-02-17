@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator, createAppContainer, 
-        createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
+        createSwitchNavigator, createBottomTabNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 //import screens
@@ -9,6 +9,7 @@ import Home from './screens/Home';
 import CameraScreen from './components/CameraScreen';
 import Demo from './screens/Demo';
 import Status from './screens/Status';
+import StartButton from './components/StartButton';
 
 class App extends React.Component {
   render() {
@@ -39,28 +40,30 @@ const AppBottomTab = createBottomTabNavigator({
   HomeScreen:{
     screen: Home,
     navigationOptions:{
-      tabBarLabel: 'HOME',
-        tabBarIcon: ({tintColor}) =>(
-          <Icon name="ios-home" color={tintColor} size={24}/>
-        )
+      tabBarLabel:  <View/>,
+      tabBarIcon: ({tintColor}) =>(
+        <Icon name="ios-home" color={tintColor} size={30} style={{paddingTop:10}}/>
+      ),
+      swipeEnabled: true
     }
   },
   CameraScreen:{
     screen:AppNavigator,
     navigationOptions:{
-      tabBarLabel: 'GO',
-        tabBarIcon: ({tintColor}) =>(
-          <Icon name="ios-fitness" color={tintColor} size={24} style={{padding:10, borderRadius:3}}/>
-        )
+      tabBarLabel:  <View/>,
+      tabBarIcon: ({tintColor}) => (<StartButton/>),
+      swipeEnabled: true,
+      tabBarVisible: false
     }
   },
   Status:{
     screen:Status,
     navigationOptions:{
-      tabBarLabel: 'STATUS',
-        tabBarIcon: ({tintColor}) =>(
-          <Icon name="ios-stats" color={tintColor} size={24}/>
-        )
+      tabBarLabel:  <View/>,
+      tabBarIcon: ({tintColor}) =>(
+        <Icon name="ios-stats" color={tintColor} size={30} style={{paddingTop:10}}/>
+      ),
+      swipeEnabled: true
     }
   }
 },{
