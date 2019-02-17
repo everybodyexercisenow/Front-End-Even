@@ -77,9 +77,10 @@ export default class Status extends Component {
                     <StatsCardComponent title = {"THIS WEEK"} contentView = {
                       <View>
                         <SegmentedControlIOS
-                          style = {{width:130, alignSelf: 'flex-end', tintColor: '#83abaa', marginRight: 8}}
+                          style = {{width:130, alignSelf: 'flex-end', marginRight: 8}}
                           values={['Exercise', 'Accuracy']}
                           selectedIndex={this.state.selectedIndex}
+                          tintColor = '#83abaa'
                           onChange={(event) => {
                             this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
                           }}

@@ -11,7 +11,7 @@ export default class Home extends Component {
     this.state = {
       mIds: null,
       mList: null,
-      photos: <Text>GG </Text>,
+      photos: null,
       url: "http://157.55.165.103:8080/",
     };
     const createDataAsync = async () => {
@@ -55,11 +55,15 @@ export default class Home extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container} style={{marginTop:20}}>
-        <ScrollView style={{marginTop:0}}>
-          {this.state.photos}
-        </ScrollView>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <SafeAreaView style={{marginTop:20}}>
+          <View style={styles.main}>
+            <ScrollView style={{marginTop:0}}>
+              {this.state.photos}
+            </ScrollView>
+          </View>
+        </SafeAreaView>
+      </View>
     );
   }
 }
@@ -69,6 +73,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor:"#83abaa"
+  },
+  main:{
+    marginTop:20,
+    backgroundColor:'white',
   }
 });
