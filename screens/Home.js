@@ -55,15 +55,14 @@ export default class Home extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <SafeAreaView style={{marginTop:20}}>
+        <SafeAreaView style={styles.container}>
+          <Text style = {styles.headerStyle}>Home</Text>
           <View style={styles.main}>
             <ScrollView style={{marginTop:0}}>
               {this.state.photos}
             </ScrollView>
           </View>
         </SafeAreaView>
-      </View>
     );
   }
 }
@@ -71,13 +70,16 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor:"#83abaa"
   },
+  headerStyle: {
+    height: global.headerHeight,
+    alignSelf: 'center',
+    fontSize : global.headerFont,
+    color: global.white,
+    paddingTop: global.headerPadding,
+  },
   main:{
-    marginTop:20,
     backgroundColor:'white',
   }
 });
