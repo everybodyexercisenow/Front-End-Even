@@ -67,7 +67,7 @@ export default class CameraScreen extends React.Component {
         { format: 'jpeg' });
     // console.log(manipResult.uri)
     this.postImage(manipResult.uri);
-    this.setState({cameraUri:manipResult.uri});
+    // this.setState({cameraUri:manipResult.uri});
   };
 
   getRatios = async () => {
@@ -80,7 +80,7 @@ export default class CameraScreen extends React.Component {
     // Toggle the state every second
     setInterval(()=>{
       this.takePicture();
-    },300);
+    },600);
 
     // this.firebaseController = new FirebaseController();
   
@@ -89,11 +89,6 @@ export default class CameraScreen extends React.Component {
     ref.child("tab").on("value", (snapshot)=> {
       this.switchScreen(Number.parseInt(snapshot.toJSON().toString()))
     })
-
-    // ref.child("videoLink").on("value", (snapshot)=> {
-    //   console.log(snapshot);
-    //   this.setState({videoLink: snapshot.toJSON().toString()});
-    // })
   }
 
   switchScreen(index){
