@@ -58,7 +58,7 @@ export default class Status extends Component {
 
       return (
           <SafeAreaView style={styles.backgroundView}>
-              <Text style = {styles.headerStyle}>Stats</Text>
+              <Text style = {styles.headerStyle}>Me</Text>
               <ScrollView style = {styles.foregroundView}>
 
                 <View style = {{flex: 2.5}}>
