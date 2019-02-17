@@ -46,7 +46,7 @@ export default class List extends Component {
         }
             
         return (
-            <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 30 }}>
+            <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 0 }}>
                 <View style={{ height: 170, marginTop: 25 }}>
                     <View style={styles.titleBorder}>
                         <Text style={styles.title}>{mList.toUpperCase()}</Text>
@@ -58,6 +58,7 @@ export default class List extends Component {
                     {mItems}
                 </ScrollView>
                 </View>
+                <View style={styles.lineStyle}></View>
         </View>
         );
   }
@@ -80,7 +81,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#83abaa',
         alignSelf: 'flex-start',
-        marginLeft: 25,
+        marginLeft: 31,
         marginBottom: 10
-    }
+    },
+    lineStyle: {
+        borderBottomColor: global.lightGrayColor, //lightgray
+        borderBottomWidth: 1,
+        marginTop:25,
+        marginBottom:0,
+        padding: 0,
+        height: 1
+    },
 });

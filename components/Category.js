@@ -52,10 +52,10 @@ export default class Category extends Component {
         </TouchableHighlight>
         <LinearGradient
           colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
-          style={{ position: 'absolute', width: 215, height: 40, left: 5, bottom: -10, padding: 0, alignItems: 'center', margin: 10}}>
+          style={{ position: 'absolute', width: 210, height: 40, left: 10, bottom: -10, padding: 0, alignItems: 'center', margin: 10}}>
         </LinearGradient>
         <View style={{position:'absolute', bottom:10, left:0, padding:5}}>
-            <Text style={{color:'white', fontWeight:'bold', fontSize:20, paddingLeft:20}}> {this.props.categoryName} </Text>
+            <Text style={{color:'white', fontWeight:'bold', fontSize:20, paddingLeft:25}}> {this.props.categoryName} </Text>
         </View>
       </View>
     );
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
         height:null,
         width:null,
         resizeMode: 'cover',
-        marginLeft:6,
+        marginLeft:10,
     }
 });
