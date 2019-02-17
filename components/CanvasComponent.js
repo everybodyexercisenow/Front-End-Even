@@ -40,6 +40,7 @@ export default class CanvasComponent extends React.Component {
             frameAnimation: new Animated.Value(0),
             frame: 0,
             interval: 0,
+            speed: 1
         }
     }
 
@@ -48,6 +49,10 @@ export default class CanvasComponent extends React.Component {
     
     componentDidMount() {
         var ref = Firebase.database().ref()
+        ref.child("speed").on("value", (snapshot)=> {
+            const speed = Number.parseInt(snapshot.toJSON().toString());
+            this.setState({speed: speed})
+        });
         ref.child("videoLink").on("value", (snapshot)=> {
             const videoLink = snapshot.toJSON().toString();
             console.log(videoLink)
@@ -73,7 +78,7 @@ export default class CanvasComponent extends React.Component {
 
                     this.state.interval = setInterval(()=>{
                         // console.log(this.state.frame);
-                        this.state.frame++;
+                        this.state.frame += 1 / this.state.speed;
                         this.forceUpdate();
                         if (this.state.frame >= this.state.demoPose.length) this.state.frame = 0;
                     }, 100)
@@ -127,7 +132,7 @@ export default class CanvasComponent extends React.Component {
     }
 
     render() {
-        let frame = this.state.frame;
+        let frame = Math.floor(this.state.frame);
         // console.log(frame)
         if (!this.state.demoPose) return null;
         // Edges
