@@ -14,8 +14,11 @@
     "react-native-canvas": "^0.1.26",
     "react-native-firebase": "^5.2.2",
     "react-native-image-resizer": "^1.0.0",
+    "react-native-vector-icons": "^6.3.0",
     "react-native-watson": "^1.6.2",
-    "react-navigation": "^3.2.3"
+    "react-navigation": "^3.2.3",
+    "victory": "31.2.0",
+    "victory-native": "31.0.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
