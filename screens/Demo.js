@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Button, Image, SafeAreaView, 
     ScrollView, SegmentedControlIOS, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Video} from 'expo';
 
 export default class Demo extends Component {
   constructor(props) {
     super(props);
+    // const { navigation } = this.props;
     this.state = {
-        selectedIndex:0
+        selectedIndex:0,
+        videolink: this.props.videolink
     };
   }
   switchScreen(index){
@@ -16,29 +19,21 @@ export default class Demo extends Component {
     }
   }
   render() {
-    return ( null
-        // <SafeAreaView style={{flex:1, alignItems:'center'}}>
-        //     <SegmentedControlIOS
-        //     values={['Demo', 'Camera']}
-        //     selectedIndex={this.state.selectedIndex}
-        //     onChange={(event) => {
-        //         this.switchScreen(event.nativeEvent.selectedSegmentIndex);
-        //         // this.setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
-        //     }}
-        //     tintColor='#83ABAA'
-        //     style={styles.segBar}
-        //     />
-            // <View style={{flex:1, justifyContent:'flex-end',  alignItems: 'center', marginTop:10}}>
-            //     <Icon 
-            //         name="ios-close-circle" 
-            //         style={{fontSize:50, color:'tomato'}}
-            //         onPress={()=> this.props.navigation.navigate('HomeScreen')}
-            //     />
-            // </View>
-        // </SafeAreaView>
+    return ( 
+      <Video
+        source={{ uri:this.state.videolink}}
+        rate={1.0}
+        volume={1.0}
+        isMuted={false}
+        resizeMode="cover"
+        shouldPlay
+        isLooping
+        style={{ width: 300, height: 300 }}
+      />
     );
   }
 }
+
 const styles = StyleSheet.create({
     segBar:{
       width:200,

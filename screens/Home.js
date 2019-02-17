@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, ScrollView, Button  } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Button, SafeAreaView  } from "react-native";
 
 import Category from '../components/Category';
 import List from '../components/List';
+// import { throws } from "assert";
 // import { FORMERR } from "dns";
 export default class Home extends Component {
   constructor(props) {
@@ -17,32 +18,27 @@ export default class Home extends Component {
       mList = await fetch(this.state.url + "catalog");
       // console.log(mList.length);
       mListArray = JSON.parse(mList["_bodyText"]);
-      console.log(mListArray)
       let mPhoto = [];
       for (let i = 0; i < mListArray.length; i++) {
-        console.log(mListArray[i]);
         const createIconAsync = async (level) => {
           const mItems = await fetch(this.state.url + "catalog/" + level);
           const mItemArray = JSON.parse(mItems["_bodyText"]);
-          console.log(mItemArray);
+          // console.log(mItemArray);
           let imgs = [];
           for (let j = 0; j < mItemArray.length; j++) {
             const item = mItemArray[j];
-            // console.log("GET: "+ this.state.url + "exercise/icon/" + item);
             const icon = this.state.url + "exercise/icon/" + item;
-            // console.log("icon: ");
-            // console.log(icon);
-            // const iconArr = JSON.parse(icon["_bodyText"]);
-            // console.log("icon "+ icon);
             imgs.push(icon);
           }
-          console.log("my images");
-          console.log(imgs);
-          mPhoto.push(<List 
-                        key={i}
-                        mCategory={mItemArray} 
-                        mImage={imgs} />);
-          // mPhoto.push(<Text>CAO</Text>);
+          mPhoto.push(
+            <View key={i}>
+              <List 
+                route={this.props.navigation}
+                mCategory={mItemArray} 
+                mImage={imgs}
+                mList= {mListArray[i]} />
+            </View>
+          );
           this.setState({photos: mPhoto})
 
         }
@@ -53,17 +49,17 @@ export default class Home extends Component {
     createDataAsync();
   }
 
-  
-
   componentDidMount(){
   }
 
 
   render() {
     return (
-      <View style={styles.container}>
-        {this.state.photos}
-      </View>
+      <SafeAreaView style={styles.container} style={{marginTop:20}}>
+        <ScrollView style={{marginTop:0}}>
+          {this.state.photos}
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
