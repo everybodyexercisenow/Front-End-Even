@@ -15,13 +15,8 @@ export default class Category extends Component {
           width:200,
           margin:10
       }}>
-        {/* <View style={{flex:2}}>
-            <View style={{position:'absolute', top:0, left:0}}>
-                <Text> {this.props.categoryName} </Text>
-            </View>
-            <Image source={this.props.imageUri} style={styles.imagebox}/>
-        </View> */}
-        <ImageBackground source={this.props.imageUri} style={styles.imagebox}>
+  
+        <ImageBackground source={{uri: this.props.imageUri}} style={styles.imagebox}>
             <View style={{position:'absolute', bottom:10, left:0, padding:5}}>
                 <Text style={{color:'white', fontWeight:'bold', fontSize:20}}> {this.props.categoryName} </Text>
             </View>
