@@ -10,12 +10,12 @@ const bodyEdges = [
     ["rightHip", "rightShoulder"],
     ["leftElbow", "leftShoulder"],
     ["rightElbow", "rightShoulder"],
-    ["leftWrist", "leftElbow"],
-    ["rightWrist", "rightElbow"],
-    ["leftHip", "leftKnee"],
-    ["rightHip", "rightKnee"],
-    ["leftAnkle", "leftKnee"],
-    ["rightAnkle", "rightKnee"],
+    // ["leftWrist", "leftElbow"],
+    // ["rightWrist", "rightElbow"],
+    // ["leftHip", "leftKnee"],
+    // ["rightHip", "rightKnee"],
+    // ["leftAnkle", "leftKnee"],
+    // ["rightAnkle", "rightKnee"],
 ]
 
 const mapIterator = (m, callback) => {
@@ -46,8 +46,8 @@ export default class CanvasComponent extends React.Component {
      
     renderEdge(p1, p2) {
         if (!p1 || !p2) return null;
-        console.log(p1)
-        console.log(p2)
+        // console.log(p1)
+        // console.log(p2)
         x1 = p1[0] * Dimensions.get('window').width;
         y1 = p1[1] * Dimensions.get('window').height;
         x2 = p2[0] * Dimensions.get('window').width;
@@ -65,7 +65,7 @@ export default class CanvasComponent extends React.Component {
         const m = this.props.positionArray;
         if (m != undefined && m != null) {
             bodyEdges.forEach(element => {
-                console.log(element)
+                // console.log(element)
                 var vs = m[element[0]];
                 var ve = m[element[1]];
                 agg.push([this.renderEdge(vs, ve)]);
