@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Category from '../components/Category';
 import FirebaseController from "./FirebaseController";
 import Demo from '../screens/Demo';
+import CanvasComponent from './CanvasComponent'
 
 export default class CameraScreen extends React.Component {
   state = {
@@ -33,7 +34,8 @@ export default class CameraScreen extends React.Component {
     mImage: null,
     imageUri: "null",
     Debug: "debug",
-    selectedIndex:1
+    selectedIndex:1,
+    positionArray:{},
   };
 
   async componentWillMount() {
@@ -42,8 +44,6 @@ export default class CameraScreen extends React.Component {
   }
 
   takePicture = () => {
-    // this.setState({Debug: this.state.count});
-    // this.setState({count: this.state.count + 1});
     if (this.camera) {
       this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved, 
         quality: 0.3}).catch(function(error) {
@@ -56,14 +56,16 @@ export default class CameraScreen extends React.Component {
   onPictureSaved = async photo => {
     const manipResult = await ImageManipulator.manipulateAsync(photo.uri, 
         [{resize: {width: 400, height: 400}}], 
-        { format: 'jpeg' });
-    console.log(manipResult.uri)
+        { format: 'jpeg' }, { flip: { vertical: true }});
+    // console.log(manipResult.uri)
     this.postImage(manipResult.uri);
   };
+
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
     return ratios;
   };
+
   constructor(props) {
     super(props);
     // Toggle the state every second
@@ -71,7 +73,7 @@ export default class CameraScreen extends React.Component {
       this.takePicture();
     },300);
 
-    console.log(this.state.selectedIndex)
+    // console.log(this.state.selectedIndex)
     this.firebaseController = new FirebaseController();
     this.firebaseController.query((string)=>{
       this.setState({Debug: string})
@@ -85,9 +87,6 @@ export default class CameraScreen extends React.Component {
   }
 
   switchScreen(index){
-    // if(index == 0){
-    //   this.props.navigation.navigate('Demo');
-    // }
     this.setState({selectedIndex: index});
   }
 
@@ -102,7 +101,11 @@ export default class CameraScreen extends React.Component {
       method: 'POST',
       body: data
     }).then(res => {
-      console.log(res)
+      // console.log(res)
+      this.setState({positionArray: JSON.parse(
+        res["_bodyText"])["keypoints"]});
+
+      // console.log(this.state.positionArray)
     }).catch(error=>{
       console.log(error)
     });
@@ -124,26 +127,6 @@ export default class CameraScreen extends React.Component {
                 width: Dimensions.get('window').width}} type={this.state.type}  ref={ref => {
                       this.camera = ref;
                     }}>
-                {/* <Image source={{uri:this.state.imageUri}} style={{width:100, height:100}} /> */}
-  
-                  {/* <Text>H</Text> */}
-                  {/* <View style={{flex:1, justifyContent: 'flex-end', marginBottom:30}}>
-                      <View style={{ height: 130, marginTop: 20 }}>
-                          <ScrollView
-                              horizontal={true} showsHorizontalScrollIndicator={false}
-                          >
-                              <Category categoryName="Daily" imageUri={require('../assets/1.jpg')}
-                                  name="Home"
-                              />
-                              <Category categoryName="Monthly" imageUri={require('../assets/2.jpg')}
-                                  name="Experiences"
-                              />
-                              <Category categoryName="Yearly" imageUri={require('../assets/3.jpg')}
-                                  name="Resturant"
-                              />
-                          </ScrollView>
-                      </View>
-                  </View> */}
                 </Camera>
               ) : (
                 <Demo />
@@ -165,6 +148,8 @@ export default class CameraScreen extends React.Component {
                       onPress={()=> this.props.navigation.navigate('HomeScreen')}
                   />
               </View>
+              <CanvasComponent 
+                positionArray={this.state.positionArray} />
             </SafeAreaView>
         </View>
       );
