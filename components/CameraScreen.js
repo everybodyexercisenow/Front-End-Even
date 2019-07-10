@@ -40,7 +40,6 @@ export default class CameraScreen extends React.Component {
     videoLink: null,
     canvasOpen: 1,
     count:0,
-    // videolink: this.props.getParam('videoLink', 'NO-ID')
   };
 
   async componentWillMount() {
